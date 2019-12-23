@@ -11,6 +11,11 @@ class AuthService {
     return user != null ? User(uid: user.uid) : null;
   }
 
+  // Listen to stream of FirebaseUser objects and convert to Been There Users
+  Stream<User> get user {
+    return _auth.onAuthStateChanged.map((FirebaseUser user) => _userFromFirebaseUser(user));
+  }
+
   // Method for anonymous sign in for testing
   Future signInAnon() async {
     try {
