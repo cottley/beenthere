@@ -23,7 +23,7 @@ Widget screenAbout() {
           ),
           Flexible(
             child: Text(
-                "Create and Manage GPS lists.\nSend to Waze(tm) to get directions.\n\nDesigned and Developed by Christopher Ottley.\n\nWaze Icon Copyright Waze.\n\nCopyright (c) 2015-2019 Christopher Ottley.",
+                "Create and Manage lists of locations\nof places you have already been.\nSend them to Waze(tm) to get directions.\n\nDesigned and Developed by Christopher Ottley.\n\nWaze Icon Copyright Waze.\n\nCopyright (c) 2015-2019 Christopher Ottley.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
