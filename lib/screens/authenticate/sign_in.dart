@@ -1,3 +1,4 @@
+import 'package:beenthere/services/auth.dart';
 import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
@@ -6,6 +7,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +22,15 @@ class _SignInState extends State<SignIn> {
             padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
             child: RaisedButton(
               child: Text('Sign in anon'),
-              onPressed: () async {},
+              onPressed: () async {
+                dynamic result = await _auth.signInAnon();
+                if (result == null) {
+                  print('Error signing in');
+                } else {
+                  print('Signed in');
+                  print(result);
+                }
+              },
             )));
   }
 }
