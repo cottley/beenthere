@@ -96,6 +96,12 @@ Widget screenAdd() {
                             FormBuilderValidators.max(70),
                           ],
                         ),
+                        FormBuilderTextField(
+                          attribute: "password",
+                          decoration: InputDecoration(labelText: "Password"),
+                          obscureText: true,
+                          maxLines: 1,
+                        ),
                         FormBuilderSegmentedControl(
                           decoration: InputDecoration(
                               labelText: "Movie Rating (Archer)"),
