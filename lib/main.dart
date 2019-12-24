@@ -15,7 +15,7 @@ void main() {
           value: AuthService().user,
               child: MaterialApp(
                 debugShowCheckedModeBanner: false,
-          home: Wrapper()
+                home: Wrapper()
         ),
       );
     }
