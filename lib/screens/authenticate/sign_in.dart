@@ -57,6 +57,7 @@ class _SignInState extends State<SignIn> {
                   onPressed: () async {
                     if (_fbSignInKey.currentState.saveAndValidate()) {
                       print(_fbSignInKey.currentState.value);
+                      print(_fbSignInKey.currentState.value['emailaddress']);
                       dynamic result = await _auth.signInAnon();
                       if (result == null) {
                         print('Error signing in');
