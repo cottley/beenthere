@@ -5,6 +5,10 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 final GlobalKey<FormBuilderState> _fbRegisterKey = GlobalKey<FormBuilderState>();
 
 class Register extends StatefulWidget {
+
+  final Function toggleView;
+  Register({ this.toggleView });
+
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -19,7 +23,17 @@ class _RegisterState extends State<Register> {
         appBar: AppBar(
             backgroundColor: Color(0xFF3F5AA6),
             elevation: 0.0,
-            title: Text('Register for Been There')),
+            title: Text('Register for Been There'),
+            actions: <Widget>[
+              FlatButton.icon(
+                icon: Icon(Icons.input),
+                label: Text('Sign In'),
+                textColor: Colors.white,
+                onPressed: () {
+                  widget.toggleView();
+                },
+              )
+            ]),
         body: Column(
           children: <Widget>[
             FormBuilder(

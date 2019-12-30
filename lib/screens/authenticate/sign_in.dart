@@ -5,6 +5,10 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 final GlobalKey<FormBuilderState> _fbSignInKey = GlobalKey<FormBuilderState>();
 
 class SignIn extends StatefulWidget {
+
+  final Function toggleView;
+  SignIn({ this.toggleView });
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -19,7 +23,17 @@ class _SignInState extends State<SignIn> {
         appBar: AppBar(
             backgroundColor: Color(0xFF3F5AA6),
             elevation: 0.0,
-            title: Text('Sign in to Been There')),
+            title: Text('Sign in to Been There'),
+            actions: <Widget>[
+              FlatButton.icon(
+                icon: Icon(Icons.person_add),
+                label: Text('Register'),
+                textColor: Colors.white,
+                onPressed: () {
+                  widget.toggleView();
+                },
+              )
+            ]),
         body: Column(
           children: <Widget>[
             FormBuilder(
