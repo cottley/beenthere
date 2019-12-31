@@ -16,6 +16,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
 
+  String error = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,12 +56,18 @@ class _RegisterState extends State<Register> {
                               InputDecoration(labelText: "eMail Address"),
                           maxLines: 1,
                           validators: [FormBuilderValidators.email()],
+                          onChanged: (val) {
+                            setState(() =>  error = ''); 
+                          }
                         ),
                         FormBuilderTextField(
                           attribute: "password",
                           decoration: InputDecoration(labelText: "Password"),
                           obscureText: true,
                           maxLines: 1,
+                          onChanged: (val) {
+                            setState(() =>  error = ''); 
+                          }
                         )
                       ],
                     ))),
@@ -70,14 +78,11 @@ class _RegisterState extends State<Register> {
                   child: Text("Register"),
                   onPressed: () async {
                     if (_fbRegisterKey.currentState.saveAndValidate()) {
-                      print(_fbRegisterKey.currentState.value);
-                      print(_fbRegisterKey.currentState.value['emailaddress']);
-                      dynamic result = await _auth.signInAnon();
+                      dynamic result = await _auth.registerWithEmailAndPassword(_fbRegisterKey.currentState.value['emailaddress'], _fbRegisterKey.currentState.value['password']);
                       if (result == null) {
-                        print('Error registering');
-                      } else {
+                        setState(() => error = 'Error registering');
+                      } else {  
                         print('Registered');
-                        print(result.uid);
                       }
                     }
                   },
@@ -90,7 +95,20 @@ class _RegisterState extends State<Register> {
                 ),
               ],
             )
-          ],
-        ));
+            ,
+            Row(children: <Widget>[
+              SizedBox(height: 12.0)
+            ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0)
+              )
+            ],)
+          ], 
+        )
+        );
   }
 }
