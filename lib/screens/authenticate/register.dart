@@ -1,4 +1,5 @@
 import 'package:beenthere/services/auth.dart';
+import 'package:beenthere/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -16,11 +17,13 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
 
+  bool loading = false;
+
   String error = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
             backgroundColor: Color(0xFF3F5AA6),
@@ -79,12 +82,14 @@ class _RegisterState extends State<Register> {
                   child: Text("Register"),
                   onPressed: () async {
                     if (_fbRegisterKey.currentState.saveAndValidate()) {
+                      setState(() => loading = true);
                       dynamic result = await _auth.registerWithEmailAndPassword(_fbRegisterKey.currentState.value['emailaddress'], _fbRegisterKey.currentState.value['password']);
                       if (result == null) {
-                        setState(() => error = 'Error registering');
-                      } else {  
-                        print('Registered');
-                      }
+                        setState(() {
+                          error = 'Error registering.';
+                          loading = false;
+                        });
+                      } 
                     }
                   },
                 ),

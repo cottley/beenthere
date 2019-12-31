@@ -1,4 +1,5 @@
 import 'package:beenthere/services/auth.dart';
+import 'package:beenthere/shared/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -16,11 +17,13 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
 
+  bool loading = false;
+
   String error = '';
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
             backgroundColor: Color(0xFF3F5AA6),
@@ -79,9 +82,13 @@ class _SignInState extends State<SignIn> {
                   child: Text("Sign In"),
                   onPressed: () async {
                     if (_fbSignInKey.currentState.saveAndValidate()) {
+                      setState(() => loading = true);
                       dynamic result = await _auth.signInWithEmailAndPassword(_fbSignInKey.currentState.value['emailaddress'], _fbSignInKey.currentState.value['password']);
                       if (result == null) {
-                        setState(() => error = 'Error signing in. Check email and password.');
+                        setState(() {
+                          error = 'Error signing in. Check email and password.';
+                          loading = false;
+                        });
                       } 
                     }
                   },
