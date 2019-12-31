@@ -16,6 +16,8 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
 
+  String error = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,12 +56,19 @@ class _SignInState extends State<SignIn> {
                               InputDecoration(labelText: "eMail Address"),
                           maxLines: 1,
                           validators: [FormBuilderValidators.email()],
+                          onChanged: (val) {
+                            setState(() =>  error = ''); 
+                          }
                         ),
                         FormBuilderTextField(
                           attribute: "password",
                           decoration: InputDecoration(labelText: "Password"),
                           obscureText: true,
                           maxLines: 1,
+                          validators: [FormBuilderValidators.minLength(6, errorText: 'Passwords must be at least 6 characters')],
+                          onChanged: (val) {
+                            setState(() =>  error = ''); 
+                          }
                         )
                       ],
                     ))),
@@ -70,15 +79,10 @@ class _SignInState extends State<SignIn> {
                   child: Text("Sign In"),
                   onPressed: () async {
                     if (_fbSignInKey.currentState.saveAndValidate()) {
-                      print(_fbSignInKey.currentState.value);
-                      print(_fbSignInKey.currentState.value['emailaddress']);
-                      dynamic result = await _auth.signInAnon();
+                      dynamic result = await _auth.signInWithEmailAndPassword(_fbSignInKey.currentState.value['emailaddress'], _fbSignInKey.currentState.value['password']);
                       if (result == null) {
-                        print('Error signing in');
-                      } else {
-                        print('Signed in');
-                        print(result.uid);
-                      }
+                        setState(() => error = 'Error signing in. Check email and password.');
+                      } 
                     }
                   },
                 ),
@@ -89,7 +93,18 @@ class _SignInState extends State<SignIn> {
                   },
                 ),
               ],
-            )
+            ),
+            Row(children: <Widget>[
+              SizedBox(height: 12.0)
+            ]),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0)
+              )
+            ],)
           ],
         ));
   }

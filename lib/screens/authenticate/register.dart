@@ -65,6 +65,7 @@ class _RegisterState extends State<Register> {
                           decoration: InputDecoration(labelText: "Password"),
                           obscureText: true,
                           maxLines: 1,
+                          validators: [FormBuilderValidators.minLength(6, errorText: 'Passwords must be at least 6 characters')],
                           onChanged: (val) {
                             setState(() =>  error = ''); 
                           }
