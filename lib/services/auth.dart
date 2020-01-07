@@ -1,4 +1,5 @@
 import 'package:beenthere/models/user.dart';
+import 'package:beenthere/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -45,6 +46,9 @@ class AuthService {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
+
+      await DatabaseService(uid: user.uid).newUser();
+
       return _userFromFirebaseUser(user);
     } catch (err) {
       print(err.toString());
