@@ -10,6 +10,12 @@ class DatabaseService {
   final CollectionReference beenThereCollection = Firestore.instance.collection('beentheres');
 
   Future newUser() async {
-    return await beenThereCollection.document(uid).setData({'userid' : uid});
+    List<String> cats = [];
+    cats.add('Family');
+    cats.add('Friends');
+    cats.add('Work');
+    cats.add('School');
+
+    return await beenThereCollection.document(uid).setData({'userid' : uid, 'categories': cats});
   }
 }
