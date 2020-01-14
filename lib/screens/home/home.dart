@@ -2,6 +2,9 @@ import 'package:beenthere/screens/home/about.dart';
 import 'package:beenthere/screens/home/add.dart';
 import 'package:beenthere/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:beenthere/services/database.dart';
+import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Home extends StatelessWidget {
 
@@ -9,37 +12,40 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: DefaultTabController(
-          length:4,
-          child: Scaffold(
-            appBar: AppBar(
-              centerTitle: false,
-              backgroundColor: Color(0xFF3F5AA6),
-              title: Text("Been There"),
-              actions: <Widget>[
-                FlatButton.icon(
-                  textColor: Colors.white,
-                  icon: Icon(Icons.person),
-                  label: Text('Logout'),
-                  onPressed: () async {
-                    await _auth.signOut();
-                  } 
+    return StreamProvider<QuerySnapshot>.value(
+          value: DatabaseService().beentheres,
+          child: Container(
+        child: DefaultTabController(
+            length:4,
+            child: Scaffold(
+              appBar: AppBar(
+                centerTitle: false,
+                backgroundColor: Color(0xFF3F5AA6),
+                title: Text("Been There"),
+                actions: <Widget>[
+                  FlatButton.icon(
+                    textColor: Colors.white,
+                    icon: Icon(Icons.person),
+                    label: Text('Logout'),
+                    onPressed: () async {
+                      await _auth.signOut();
+                    } 
 
-                )
-              ],
-            ),
-            bottomNavigationBar: menu(),
-            body: TabBarView(
-              children: [
-                Container(child: Icon(Icons.directions_transit)),
-                Container(child: screenAdd()),
-                Container(child: Icon(Icons.directions_car)),
-                Container(child: screenAbout()),
-              ],
+                  )
+                ],
+              ),
+              bottomNavigationBar: menu(),
+              body: TabBarView(
+                children: [
+                  Container(child: Icon(Icons.directions_transit)),
+                  Container(child: screenAdd()),
+                  Container(child: Icon(Icons.directions_car)),
+                  Container(child: screenAbout()),
+                ],
+              ),
             ),
           ),
-        ),
+      ),
     );
   }
 }
