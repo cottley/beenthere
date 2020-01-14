@@ -18,4 +18,8 @@ class DatabaseService {
 
     return await beenThereCollection.document(uid).setData({'userid' : uid, 'categories': cats});
   }
+
+  Stream<QuerySnapshot> get beentheres {
+    return beenThereCollection.snapshots();
+  }
 }
